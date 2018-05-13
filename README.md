@@ -26,7 +26,7 @@ You must draw map design by letter.
 space is an empty field,
 "c" is normal wall,
 "." is normal floor,
-"w" is catsle wall,
+"w" is castle wall,
 "p" is player,
 "s" is stone,
 "x" is stone floor,
