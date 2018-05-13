@@ -1,6 +1,7 @@
 # Sokoban
 Sokoban arcade game engine
-Graphics by Sebastian 'xa' Rosik
+# Graphics
+by Sebastian 'xa' Rosik
 
 # Mapping
 The map template working with my engine looks like this:
