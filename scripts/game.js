@@ -303,13 +303,13 @@ class Interface {
     }
 
     stats () {
-        this.time++;
         document.getElementById('game_stats').innerHTML = "Time: " + this.time + " Lvl: " + (this.main.lvl + 1);
     }
 
     timer () {
         setInterval(function () {
             if (!this.main.game_complete) {
+                this.time++;
                 this.stats();
             }
         }.bind(this), 1000);
@@ -317,31 +317,13 @@ class Interface {
 
     keyboard () {
         document.addEventListener('keydown', function(e) {
-            switch (e.key) {
-                case 'a':
-                    if (!this.main.game_complete) { 
-                        this.main.player.move('a');
-                    } 
-                break;
-                case 'd': 
-                    if (!this.main.game_complete) {
-                        this.main.player.move('d'); 
-                    }
-                break;
-                case 'w': 
-                    if (!this.main.game_complete) {
-                        this.main.player.move('w'); 
-                    }
-                    break;
-                case 's': 
-                    if (!this.main.game_complete) {
-                        this.main.player.move('s'); 
-                    }
-                    break;
-                case 'Escape' : ; break;
-                case 'Enter' : ; break;
-            }
             if (!this.main.game_complete) {
+                switch (e.key) {
+                    case 'a': this.main.player.move('a'); break;
+                    case 'd': this.main.player.move('d'); break;
+                    case 'w': this.main.player.move('w'); break;
+                    case 's': this.main.player.move('s'); break;
+                }
                 this.main.update(); 
             }
         }.bind(this));
