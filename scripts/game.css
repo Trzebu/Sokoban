@@ -2,6 +2,8 @@ html, body {
     margin: 0;
     padding: 0;
     background: black;
+    font-family: "Times New Roman", Times, serif;
+    user-select: none;
 }
 
 #game {
@@ -15,6 +17,10 @@ html, body {
     left: 0;
     right: 0;
     background: white;
+}
+
+#game_stats {
+    cursor: default;
 }
 
 .controlls {
