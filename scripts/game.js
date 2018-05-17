@@ -139,6 +139,7 @@ class Main {
     reset () {
         this.lvl = 0;
         this.interface.time = 0;
+        this.steps = 0;
         this.mapClear();
         this.loadMap();
         this.game_complete = false;
