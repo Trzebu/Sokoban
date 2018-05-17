@@ -16,6 +16,7 @@ class Main {
         this.game_complete = false;
         this.stones = [];
         this.player = undefined;
+        this.steps = 0;
         this.loaded = false;
         this.loadImages();
         this.loadMap();
@@ -98,6 +99,7 @@ class Main {
 
     update () {
         this.checkStats();
+        this.interface.stats();
         this.draw.draw();
     }
 
@@ -176,6 +178,7 @@ class Player {
         if (this.move_ok) {
             this.x = this.new_position_x;
             this.y = this.new_position_y;
+            this.main.steps++;
         }
     }
 
@@ -303,7 +306,7 @@ class Interface {
     }
 
     stats () {
-        document.getElementById('game_stats').innerHTML = "Time: " + this.time + " Lvl: " + (this.main.lvl + 1);
+        document.getElementById('game_stats').innerHTML = "Time: " + this.time + " Lvl: " + (this.main.lvl + 1) + " Steps: " + this.main.steps;
     }
 
     timer () {
@@ -318,11 +321,16 @@ class Interface {
     keyboard () {
         document.addEventListener('keydown', function(e) {
             if (!this.main.game_complete) {
-                switch (e.key) {
-                    case 'a': this.main.player.move('a'); break;
-                    case 'd': this.main.player.move('d'); break;
-                    case 'w': this.main.player.move('w'); break;
-                    case 's': this.main.player.move('s'); break;
+                let key = e.which || e.keyCode;
+                switch (key) {
+                    case 65: this.main.player.move('a'); break;
+                    case 68: this.main.player.move('d'); break;
+                    case 87: this.main.player.move('w'); break;
+                    case 83: this.main.player.move('s'); break;
+                    case 37: this.main.player.move('a'); break;
+                    case 38: this.main.player.move('w'); break;
+                    case 39: this.main.player.move('d'); break;
+                    case 40: this.main.player.move('s'); break;
                 }
                 this.main.update(); 
             }
