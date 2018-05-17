@@ -56,6 +56,7 @@ class Main {
                 return this.images[i];
             }
         }
+        return false;
     }
 
     loadMap () {
@@ -238,6 +239,8 @@ class Stone {
         if (!this.highlighting_set) {
             this.highlighting_set = true;
             this.img = this.highlighting_img;
+            const SOUND = new Audio('sounds/sounds1.mp3');
+            SOUND.play();
         }
     }
 
