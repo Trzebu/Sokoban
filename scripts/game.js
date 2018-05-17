@@ -7,9 +7,9 @@ class Main {
         this.context = this.canvas.getContext('2d');
         this.canvas.width = this.width;
         this.canvas.height = this.height;
-        this.context.fillStyle = 'white';
+        this.context.fillStyle = 'black';
         this.context.font = "24pt Arial";
-        this.context.fillText('Loading...', 250, 250);
+        this.context.fillText('Loading...', 190, 250);
         this.images = [];
         this.map = [];
         this.lvl = 0;
