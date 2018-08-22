@@ -6,8 +6,46 @@ var game_loop = null;
 var map = [];
 var stones = [];
 
-var Stone = function (id) {
+function draw (interp) {
+    ctx.clearRect(0, 0, 512, 512);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 512, 512);
+
+    for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 16; j++) {
+            ctx.drawImage(
+                map[i][j][1],
+                0, 0,
+                32, 32,
+                j * 32, i * 32,
+                32, 32
+            );
+        }
+    }
+
+    for (var i in stones) {
+       ctx.drawImage(
+            stones[i]["img"],
+            0, 0,
+            32, 32,
+            stones[i]["x"] * 32, stones[i]["y"] * 32,
+            32, 32
+        ); 
+    }
+
+}
+
+var Stone = function (id, x, y) {
     this.id = id;
+    this.x = x;
+    this.y = y;
+
+    if (id == "player") {
+        this.img = img.get("player");
+    } else {
+        this.img = img.get("kamien1");
+    }
+
 }
 
 function getStoneById (id) {
@@ -45,11 +83,11 @@ function loadMap () {
                 break;
                 case "s":
                     map[i][j] = ["TEXTURE_FLOOR", img.get("kafelka")];
-                    stones.push(new Stone("stone"));
+                    stones.push(new Stone("stone", j, i));
                 break;
                 case "p":
                     map[i][j] = ["TEXTURE_FLOOR", img.get("kafelka")];
-                    stones.push(new Stone("player"));
+                    stones.push(new Stone("player", j, i));
                 break;
             }
 
@@ -96,6 +134,7 @@ var GameLoop = function () {
         }
 
         //animations
+        draw(this.delta / (1000 / 60));
 
         this.loopId = window.requestAnimationFrame(this.loop.bind(this));
     }
