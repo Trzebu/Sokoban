@@ -1,6 +1,0 @@
-var maps = [];
-maps[0] = "                                                                    cccc            cp.ccc          c.s..c         ccc.c.cc        cxc.c..c        cxs..c.c        cx...s.c        cccccccc                                                                     ";
-maps[1] = "                                     ccccccc      cccc.....c      c...xccc.c      c.c.c....cc     c.c.s.scx.c     c.c.....c.c     c.xcs.s.c.c     cc....c.c.ccc    c.cccx....pc    c.....cc...c    cccccccccccc                                                 ";
-maps[2] = "                                                    ccccc           c...c           cs..c         ccc..scc        c..s.s.c      ccc.c.cc.cccccc c...c.cc.c..xxc c.s..s......xxc ccccc.cc.c..xxc     c..p.cccccc     cccccc                                      ";
-maps[3] = "                                                   wwwwww         ww..x.w         w.s.w.w         w.xs..w         w..wsww         wx.p.w          wwwwww                                                                                                        ";
-maps[4] = "                                  ccccc           cp..c           c.ssc ccc       c.s.c cxc       ccc.cccxc        cc....xc        c...c..c        c...cccc        ccccc                                                                                        ";
