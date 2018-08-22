@@ -2,6 +2,63 @@
 
 var game_window = null;
 var ctx = null;
+var game_loop = null;
+var map = [];
+var stones = [];
+
+var Stone = function (id) {
+    this.id = id;
+}
+
+function getStoneById (id) {
+    for (var i in stones) {
+        if (stones[i].id == id) {
+            return stones[i];
+        }
+    }
+    return false;
+}
+
+function loadMap () {
+    var char = 0;
+
+    for (var i = 0; i < 16; i++) {
+        map[i] = new Array();
+
+        for (var j = 0; j < 16; j++) {
+
+            switch (maps[0].charAt(char)) {
+                case " ":
+                    map[i][j] = ["TEXTURE_NONE", img.get("kafelka3")];
+                break;
+                case ".":
+                    map[i][j] = ["TEXTURE_FLOOR", img.get("kafelka")];
+                break;
+                case "c":
+                    map[i][j] = ["TEXTURE_WALL", img.get("murek")];
+                break;
+                case "w":
+                    map[i][j] = ["TEXTURE_WALL", img.get("castle_wall")];
+                break;
+                case "x":
+                    map[i][j] = ["TEXTURE_FLOOR_X", img.get("kafelka2")];
+                break;
+                case "s":
+                    map[i][j] = ["TEXTURE_FLOOR", img.get("kafelka")];
+                    stones.push(new Stone("stone"));
+                break;
+                case "p":
+                    map[i][j] = ["TEXTURE_FLOOR", img.get("kafelka")];
+                    stones.push(new Stone("player"));
+                break;
+            }
+
+            char++;
+        }
+
+    }
+
+}
 
 var GameLoop = function () {
     this.loopId = null;
@@ -91,7 +148,7 @@ var img = function () {
             object.onload = function () {
                 amount++;
                 if (amount == this.list.length) {
-                    //start loop
+                    gameStart();
                 }
             }.bind(this);
             object.onerror = function () {
@@ -105,6 +162,11 @@ var img = function () {
     }
 
     this.load();
+}
+
+function gameStart () {
+    loadMap();
+    game_loop = new GameLoop();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
