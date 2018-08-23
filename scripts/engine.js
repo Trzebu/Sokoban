@@ -28,29 +28,100 @@ function draw (interp) {
             stones[i]["img"],
             0, 0,
             32, 32,
-            stones[i]["x"] * 32, stones[i]["y"] * 32,
+            stones[i]["pixel_pos"]["x"], stones[i]["pixel_pos"]["y"],
             32, 32
         ); 
     }
 
 }
 
-var Stone = function (id, x, y) {
-    this.id = id;
+function animation (delta) {
+    
+}
+
+var Stone = function (name, x, y) {
+    this.id = x + y;
+    this.name = name;
     this.x = x;
     this.y = y;
+    this.delta_x = this.x;
+    this.delta_y = this.y;
+    this.pixel_pos = {
+        x: this.x * 32,
+        y: this.y * 32
+    }
+    this.in_roud = false;
+    this.move_ok = true;
 
-    if (id == "player") {
+    if (name == "player") {
         this.img = img.get("player");
     } else {
         this.img = img.get("kamien1");
     }
 
+    this.move = function () {
+        var stone_near = getStoneByCoord(this.x, this.y, this.id);
+
+        if (stone_near !== false) {
+            if (this.x !== this.delta_x) {
+                stones[stone_near]["x"] = this.x < this.delta_x ? this.x - 1 : this.x + 1;
+            } else if (this.y !== this.delta_y) {
+                stones[stone_near]["y"] = this.y < this.delta_y ? this.y - 1 : this.y + 1;
+            }
+
+        }
+
+        this.checkCollisions();
+
+        if (!this.move_ok)  {
+            this.x = this.delta_x;
+            this.y = this.delta_y;
+            return;
+        }
+
+        if (this.x !== this.delta_x) {
+            this.pixel_pos["x"] += this.x < this.delta_x ? -4 : 4;
+            this.delta_x += this.x < this.delta_x ? -0.125 : 0.125;
+            this.in_roud = true;
+        } else if (this.y !== this.delta_y) {
+            this.pixel_pos["y"] += this.y < this.delta_y ? -4 : 4;
+            this.delta_y += this.y < this.delta_y ? -0.125 : 0.125;
+            this.in_roud = true;
+        } else {
+            this.in_roud = false;
+        }
+    }
+
+    this.checkCollisions = function () {
+        var stone_near = getStoneByCoord(this.x, this.y, this.id);
+
+        if (map[this.y][this.x][0] === "TEXTURE_WALL") {
+            this.move_ok = false;
+            return;
+        } else if (stone_near !== false) {
+            if (!stones[stone_near].move_ok) {
+                this.move_ok = false;
+                return;
+            }
+        }
+
+        this.move_ok = true;
+    }
+
+}
+
+function getStoneByCoord (x, y, id) {
+    for (var i = 0; i < stones.length; i++) {
+        if (stones[i].x == x && stones[i].y == y && id != stones[i].id) {
+            return i;
+        }
+    }
+    return false;
 }
 
 function getStoneById (id) {
     for (var i in stones) {
-        if (stones[i].id == id) {
+        if (stones[i].name == id) {
             return stones[i];
         }
     }
@@ -107,6 +178,7 @@ var GameLoop = function () {
     this.lastFpsUpdate = 0;
 
     this.loop = function (timestamp) {
+        var start = timestamp;
         if (timestamp < this.lastFrameTimeMs + (1000 / 60)) {
             window.requestAnimationFrame(this.loop.bind(this));
             return;
@@ -125,7 +197,11 @@ var GameLoop = function () {
         var numUpdateSteps = 0;
 
         while(this.delta >= (1000 / 60)){
-            //logic update
+
+            for (var i in stones) {
+                stones[i].move();
+            }
+
             this.delta -= 1000 / 60;
             if(++numUpdateSteps >= 240){
                 this.panic();
@@ -133,8 +209,7 @@ var GameLoop = function () {
             }
         }
 
-        //animations
-        draw(this.delta / (1000 / 60));
+        draw(this.delta / timestamp);
 
         this.loopId = window.requestAnimationFrame(this.loop.bind(this));
     }
@@ -202,6 +277,25 @@ var img = function () {
 
     this.load();
 }
+
+document.addEventListener("keydown", function (e) {
+    //alert(e.keyCode)
+    var player = getStoneById("player");
+
+    if (!player.in_roud) {
+        if (e.keyCode === 65) {
+            player.x--;
+        } else if (e.keyCode === 68) {
+            player.x++;
+        } else if (e.keyCode === 83) {
+            player.y++;
+        } else if (e.keyCode === 87) {
+            player.y--;
+        }
+    }
+
+});
+
 
 function gameStart () {
     loadMap();
