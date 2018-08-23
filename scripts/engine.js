@@ -62,7 +62,7 @@ var Stone = function (name, x, y) {
     this.move = function () {
         var stone_near = getStoneByCoord(this.x, this.y, this.id);
 
-        if (stone_near !== false) {
+        if (stone_near !== false && this.name != "stone") {
             if (this.x !== this.delta_x) {
                 stones[stone_near]["x"] = this.x < this.delta_x ? this.x - 1 : this.x + 1;
             } else if (this.y !== this.delta_y) {
@@ -98,12 +98,12 @@ var Stone = function (name, x, y) {
         if (map[this.y][this.x][0] === "TEXTURE_WALL") {
             this.move_ok = false;
             return;
-        } else if (stone_near !== false) {
-            if (!stones[stone_near].move_ok) {
-                this.move_ok = false;
-                return;
-            }
         }
+        if (stone_near !== false && this.name != "player") {
+            this.move_ok = false;
+            return;
+        }
+        
 
         this.move_ok = true;
     }
