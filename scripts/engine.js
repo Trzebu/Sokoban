@@ -6,6 +6,8 @@ var game_loop = null;
 var map = [];
 var stones = [];
 var lvl = 0;
+var steps = 0;
+var time = 0;
 
 var Stone = function (name, x, y) {
     this.id = x + y;
@@ -69,10 +71,12 @@ var Stone = function (name, x, y) {
             this.pixel_pos["x"] += this.x < this.delta_x ? -4 : 4;
             this.delta_x += this.x < this.delta_x ? -0.125 : 0.125;
             this.in_roud = true;
+            this.steps();
         } else if (this.y !== this.delta_y) {
             this.pixel_pos["y"] += this.y < this.delta_y ? -4 : 4;
             this.delta_y += this.y < this.delta_y ? -0.125 : 0.125;
             this.in_roud = true;
+            this.steps();
         } else {
             this.in_roud = false;
         }
@@ -85,6 +89,12 @@ var Stone = function (name, x, y) {
         } else {
             this.highlighting = false;
             this.img = img.get("kamien1");
+        }
+    }
+
+    this.steps = function () {
+        if (this.name == "player") {
+            steps += 0.125;
         }
     }
 
@@ -196,9 +206,60 @@ function checkStonesReady () {
 }
 
 function loadLvl () {
+    if (lvl == maps.length) {
+        gameComplete();
+        return;
+    }
     map = [];
     stones = [];
     loadMap();
+}
+
+function gameComplete () {
+    game_loop.stopLoop();
+    time.stop();
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillStyle = 'white';
+    ctx.font = "24pt Arial";
+    ctx.fillText('Game complete.', 150, 250);
+}
+
+function updateStats () {
+    document.getElementById("timer").innerText = "Time: " + time.time;
+    document.getElementById("steps").innerText = "Steps: " + parseInt(steps);
+}
+
+function gameReset () {
+    lvl = 0;
+    steps = 0;
+    time.reset();
+    loadLvl();
+}
+
+var Timer = function () {
+
+    this.time = 0;
+    this.intervalId = null;
+
+    this.increment = function () {
+        this.time++;
+    }
+
+    this.start = function () {
+        this.intervalId = setInterval(this.increment.bind(this), 1000);
+    }
+
+    this.stop = function () {
+        clearInterval(this.intervalId);
+        this.time = 0;
+    }
+
+    this.reset = function () {
+        this.stop();
+        this.start();
+    }
+
 }
 
 var GameLoop = function () {
@@ -235,6 +296,7 @@ var GameLoop = function () {
             }
 
             checkStonesReady();
+            updateStats();
 
             this.delta -= 1000 / 60;
             if(++numUpdateSteps >= 240){
@@ -333,6 +395,8 @@ document.addEventListener("keydown", function (e) {
 function gameStart () {
     loadLvl();
     game_loop = new GameLoop();
+    time = new Timer();
+    time.start();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

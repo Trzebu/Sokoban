@@ -8,7 +8,7 @@ body {
 
 #game_window {
     width: 512px;
-    height: 512px;
+    height: 532px;
     display: block;
     margin: auto;
     position: absolute;
@@ -16,4 +16,18 @@ body {
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+#top {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    white-space: pre;
+}
+
+.click:hover {
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
 }
