@@ -1,3 +1,7 @@
 var maps = [];
 
 maps.push("                                                                    cccc            cp.ccc          c.s..c         ccc.c.cc        cxc.c..c        cxs..c.c        cx...s.c        cccccccc                                                                     ");
+maps.push("                                                   wwwwww         ww..x.w         w.s.w.w         w.xs..w         w..wsww         wx..pw          wwwwww                                                                                                        ");
+maps.push("                                                    ccccc           c...c           cs..c         ccc..scc        c..s.s.c      ccc.c.cc.cccccc c...c.cc.c..xxc c.s..s......xxc ccccc.cc.c..xxc     c..p.cccccc     cccccc                                      ");
+maps.push("                                  ccccc           cp..c           c.ssc ccc       c.s.c cxc       ccc.cccxc        cc....xc        c...c..c        c...cccc        ccccc                                                                                        ");
+maps.push("                                     ccccccc      cccc.....c      c...xccc.c      c.c.c....cc     c.c.s.scx.c     c.c.....c.c     c.xcs.s.c.c     cc....c.c.ccc    c.cccx....pc    c.....cc...c    cccccccccccc                                                 ");

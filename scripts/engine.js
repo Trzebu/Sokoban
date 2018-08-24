@@ -5,39 +5,7 @@ var ctx = null;
 var game_loop = null;
 var map = [];
 var stones = [];
-
-function draw (interp) {
-    ctx.clearRect(0, 0, 512, 512);
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, 512, 512);
-
-    for (var i = 0; i < 16; i++) {
-        for (var j = 0; j < 16; j++) {
-            ctx.drawImage(
-                map[i][j][1],
-                0, 0,
-                32, 32,
-                j * 32, i * 32,
-                32, 32
-            );
-        }
-    }
-
-    for (var i in stones) {
-       ctx.drawImage(
-            stones[i]["img"],
-            0, 0,
-            32, 32,
-            stones[i]["pixel_pos"]["x"], stones[i]["pixel_pos"]["y"],
-            32, 32
-        ); 
-    }
-
-}
-
-function animation (delta) {
-    
-}
+var lvl = 0;
 
 var Stone = function (name, x, y) {
     this.id = x + y;
@@ -52,6 +20,7 @@ var Stone = function (name, x, y) {
     }
     this.in_roud = false;
     this.move_ok = true;
+    this.highlighting = false;
 
     if (name == "player") {
         this.img = img.get("player");
@@ -61,7 +30,7 @@ var Stone = function (name, x, y) {
 
     this.move = function () {
         var stone_near = getStoneByCoord(this.x, this.y, this.id);
-        
+
         if (map[this.y][this.x][0] === "TEXTURE_WALL") {
             this.move_ok = false;
         } else if (stone_near !== false) {
@@ -83,6 +52,7 @@ var Stone = function (name, x, y) {
             } else {
                 stones[stone_near]["x"] = stone_new_x;
                 stones[stone_near]["y"] = stone_new_y;
+                stones[stone_near].checkHighlighting();
             }
 
         } else {
@@ -105,6 +75,16 @@ var Stone = function (name, x, y) {
             this.in_roud = true;
         } else {
             this.in_roud = false;
+        }
+    }
+
+    this.checkHighlighting = function () {
+        if (map[this.y][this.x][0] === "TEXTURE_FLOOR_X") {
+            this.highlighting = true;
+            this.img = img.get("kamien_hi1");
+        } else {
+            this.highlighting = false;
+            this.img = img.get("kamien1");
         }
     }
 
@@ -136,7 +116,7 @@ function loadMap () {
 
         for (var j = 0; j < 16; j++) {
 
-            switch (maps[0].charAt(char)) {
+            switch (maps[lvl].charAt(char)) {
                 case " ":
                     map[i][j] = ["TEXTURE_NONE", img.get("kafelka3")];
                 break;
@@ -167,6 +147,58 @@ function loadMap () {
 
     }
 
+}
+
+function draw (interp) {
+    ctx.clearRect(0, 0, 512, 512);
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, 512, 512);
+
+    for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 16; j++) {
+            ctx.drawImage(
+                map[i][j][1],
+                0, 0,
+                32, 32,
+                j * 32, i * 32,
+                32, 32
+            );
+        }
+    }
+
+    for (var i in stones) {
+       ctx.drawImage(
+            stones[i]["img"],
+            0, 0,
+            32, 32,
+            stones[i]["pixel_pos"]["x"], stones[i]["pixel_pos"]["y"],
+            32, 32
+        ); 
+    }
+
+}
+
+function checkStonesReady () {
+    var amount = 0;
+    for (var i in stones) {
+        if (stones[i].name === "stone") {
+            if (stones[i].highlighting) {
+                amount++;
+            }
+        }
+    }
+
+    if (amount == (stones.length - 1)) {
+        lvl++;
+        loadLvl();
+    }
+
+}
+
+function loadLvl () {
+    map = [];
+    stones = [];
+    loadMap();
 }
 
 var GameLoop = function () {
@@ -201,6 +233,8 @@ var GameLoop = function () {
             for (var i in stones) {
                 stones[i].move();
             }
+
+            checkStonesReady();
 
             this.delta -= 1000 / 60;
             if(++numUpdateSteps >= 240){
@@ -279,7 +313,6 @@ var img = function () {
 }
 
 document.addEventListener("keydown", function (e) {
-    //alert(e.keyCode)
     var player = getStoneById("player");
 
     if (!player.in_roud) {
@@ -298,7 +331,7 @@ document.addEventListener("keydown", function (e) {
 
 
 function gameStart () {
-    loadMap();
+    loadLvl();
     game_loop = new GameLoop();
 }
 
