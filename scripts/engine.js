@@ -61,17 +61,33 @@ var Stone = function (name, x, y) {
 
     this.move = function () {
         var stone_near = getStoneByCoord(this.x, this.y, this.id);
+        
+        if (map[this.y][this.x][0] === "TEXTURE_WALL") {
+            this.move_ok = false;
+        } else if (stone_near !== false) {
+            var stone_new_x = this.x;
+            var stone_new_y = this.y;
 
-        if (stone_near !== false && this.name != "stone") {
             if (this.x !== this.delta_x) {
-                stones[stone_near]["x"] = this.x < this.delta_x ? this.x - 1 : this.x + 1;
+                stone_new_x = this.x < this.delta_x ? this.x - 1 : this.x + 1;
             } else if (this.y !== this.delta_y) {
-                stones[stone_near]["y"] = this.y < this.delta_y ? this.y - 1 : this.y + 1;
+                stone_new_y = this.y < this.delta_y ? this.y - 1 : this.y + 1;
             }
 
-        }
+            var stone_near_stone = getStoneByCoord(stone_new_x, stone_new_y, stones[stone_near]);
 
-        this.checkCollisions();
+            if (map[stone_new_y][stone_new_x][0] === "TEXTURE_WALL") {
+                this.move_ok = false
+            } else if (stone_near_stone !== false) {
+                this.move_ok = false
+            } else {
+                stones[stone_near]["x"] = stone_new_x;
+                stones[stone_near]["y"] = stone_new_y;
+            }
+
+        } else {
+            this.move_ok = true;
+        }
 
         if (!this.move_ok)  {
             this.x = this.delta_x;
@@ -90,22 +106,6 @@ var Stone = function (name, x, y) {
         } else {
             this.in_roud = false;
         }
-    }
-
-    this.checkCollisions = function () {
-        var stone_near = getStoneByCoord(this.x, this.y, this.id);
-
-        if (map[this.y][this.x][0] === "TEXTURE_WALL") {
-            this.move_ok = false;
-            return;
-        }
-        if (stone_near !== false && this.name != "player") {
-            this.move_ok = false;
-            return;
-        }
-        
-
-        this.move_ok = true;
     }
 
 }
