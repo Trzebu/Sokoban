@@ -2,23 +2,27 @@
 <html lang="en">
 
     <head>
-        <title>Sokoban</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="scripts/game.css" >
+        <title>Sokoban v2.0</title>
+        <link rel="stylesheet" href="scripts/normalize.css">
+        <link rel="stylesheet" href="scripts/game.css">
+        <script type="text/javascript" src="scripts/maps.js"></script>
+        <script type="text/javascript" src="scripts/engine.js"></script>
     </head>
 
     <body>
-
-        <div id="game">
-            <div id="game_stats">Time: 0 Lvl: 1</div>
-            <div class="controlls"><a onclick="MAIN.reset()" class="switch">Game reset</a> | <a onclick="MAIN.map_reset()" class="switch">Lvl reset</a></div>
-            <canvas id="game_window">
-                Your web browser not support canvas element. 
+        <div id="game_window">
+            <div id="top">
+                <div id="timer"></div>
+                <div> | </div>
+                <div id="steps"></div>
+                <div class="click" onclick="gameReset()"> | Game reset</div>
+                <div class="click" onclick="loadLvl()"> | Lvl reset</div>
+            </div>
+            <canvas id="game" width="512" height="512">
+                Whoops! This look like your web browser not support canvas element! Upgrade your browser if you want to play in this game.
             </canvas>
         </div>
 
     </body>
-
-    <script type="text/javascript" src="scripts/maps.js"></script>
-    <script type="text/javascript" src="scripts/game.js"></script>
+    
 </html>

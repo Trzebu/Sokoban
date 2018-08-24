@@ -1,14 +1,14 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    background: black;
+body {
+    width: 100%;
+    height: 100%;
+    background-color: black; 
+    color: white;
     font-family: "Times New Roman", Times, serif;
-    user-select: none;
 }
 
-#game {
+#game_window {
     width: 512px;
-    height: 522px;
+    height: 532px;
     display: block;
     margin: auto;
     position: absolute;
@@ -16,18 +16,18 @@ html, body {
     bottom: 0;
     left: 0;
     right: 0;
-    background: white;
 }
 
-#game_stats {
-    cursor: default;
+#top {
+    width: 100%;
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    white-space: pre;
 }
 
-.controlls {
-    float: right;
-    margin-top: -18px;
-}
-
-.switch {
+.click:hover {
     cursor: pointer;
+    color: blue;
+    text-decoration: underline;
 }
