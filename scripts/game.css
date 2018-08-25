@@ -31,3 +31,26 @@ body {
     color: blue;
     text-decoration: underline;
 }
+
+.grid {
+    width: 30px;
+    height: 30px;
+    background-color: silver;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.asset {
+    width: 32px;
+    height: 32px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#assets {
+    height: 32px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}

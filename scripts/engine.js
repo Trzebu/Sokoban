@@ -377,6 +377,11 @@ var img = function () {
 document.addEventListener("keydown", function (e) {
     var player = getStoneById("player");
 
+    if (!player) {
+        alert("A problem has been detected in this map. The player's position is missing.");
+        return false;
+    }
+
     if (!player.in_roud) {
         if (e.keyCode === 65) {
             player.x--;
