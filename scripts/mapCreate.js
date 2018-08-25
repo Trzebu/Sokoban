@@ -69,7 +69,7 @@ function getMapCode () {
         }
     }
 
-    prompt("Here is your map code: ", code);
+    prompt("Here is your map code. Paste this code to maps.js as new array. That's all, your map is ready to play! ", code);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
