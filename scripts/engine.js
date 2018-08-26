@@ -3,6 +3,8 @@
 var game_window = null;
 var ctx = null;
 var game_loop = null;
+var player = null;
+var keys = new Keyboard();
 var map = [];
 var stones = [];
 var lvl = 0;
@@ -121,6 +123,10 @@ function getStoneById (id) {
 function loadMap () {
     var char = 0;
 
+    if (typeof maps[lvl] === "undefined") {
+        return;
+    }
+
     for (var i = 0; i < 16; i++) {
         map[i] = new Array();
 
@@ -199,7 +205,7 @@ function checkStonesReady () {
     }
 
     if (amount == (stones.length - 1)) {
-        lvl++;
+        ++lvl;
         loadLvl();
     }
 
@@ -213,6 +219,7 @@ function loadLvl () {
     map = [];
     stones = [];
     loadMap();
+    player = getStoneById("player");
 }
 
 function gameComplete () {
@@ -262,6 +269,26 @@ var Timer = function () {
 
 }
 
+function updateKeys () {
+
+    if (!player.in_roud) {
+        if (keys.use.A.pressed ||
+            keys.use.left.pressed) {
+            player.x--;
+        } else if (keys.use.D.pressed ||
+                   keys.use.right.pressed) {
+            player.x++;
+        } else if (keys.use.S.pressed ||
+                   keys.use.down.pressed) {
+            player.y++;
+        } else if (keys.use.W.pressed ||
+                   keys.use.up.pressed) {
+            player.y--;
+        }
+    }
+
+}
+
 var GameLoop = function () {
     this.loopId = null;
     this.lastFrameTimeMs = 0;
@@ -273,7 +300,7 @@ var GameLoop = function () {
     this.loop = function (timestamp) {
         var start = timestamp;
         if (timestamp < this.lastFrameTimeMs + (1000 / 60)) {
-            window.requestAnimationFrame(this.loop.bind(this));
+            this.loopId = window.requestAnimationFrame(this.loop.bind(this));
             return;
         }
 
@@ -295,6 +322,7 @@ var GameLoop = function () {
                 stones[i].move();
             }
 
+            updateKeys();
             checkStonesReady();
             updateStats();
 
@@ -323,6 +351,7 @@ var GameLoop = function () {
     }
 
     this.startLoop();
+
 }
 
 var img = function () {
@@ -374,28 +403,90 @@ var img = function () {
     this.load();
 }
 
-document.addEventListener("keydown", function (e) {
-    var player = getStoneById("player");
-
-    if (!player) {
-        alert("A problem has been detected in this map. The player's position is missing.");
-        return false;
-    }
-
-    if (!player.in_roud) {
-        if (e.keyCode === 65) {
-            player.x--;
-        } else if (e.keyCode === 68) {
-            player.x++;
-        } else if (e.keyCode === 83) {
-            player.y++;
-        } else if (e.keyCode === 87) {
-            player.y--;
+function Keyboard () {
+    this.use = {
+        'W': {
+            pressed: false,
+            name: "W"
+        },
+        'S': {
+            pressed: false,
+            name: "S"
+        },
+        'A': {
+            pressed: false,
+            name: "A"
+        },
+        'D': {
+            pressed: false,
+            name: "D"
+        },
+        'up': {
+            pressed: false,
+            name: "up"
+        },
+        'down': {
+            pressed: false,
+            name: "down"
+        },
+        'left': {
+            pressed: false,
+            name: "left"
+        },
+        'right': {
+            pressed: false,
+            name: "right"
         }
     }
 
-});
+    this.keys = {
+        '87': 'W',
+        '83': 'S',
+        '65': 'A',
+        '68': 'D',
+        '37': 'left',
+        '38': 'up',
+        '39': 'right',
+        '40': 'down'
+    }
 
+    this.init = function () {
+        window.document.addEventListener("keydown", (e) => this.keyDown(e));
+        window.document.addEventListener("keyup", (e) => this.keyUp(e));
+    }
+
+    this.keyDown = function (e) {
+        var code = e.which || e.keyCode;
+        var key = this.getKeyById(e, code);
+
+        if(!this.use[key]){
+            return false;
+        }
+
+        this.use[key].pressed = true;
+    }
+
+    this.keyUp = function (e) {
+        var code = e.which || e.keyCode;
+        var key = this.getKeyById(e, code);
+
+        if (this.use[key] && this.use[key].pressed) {
+            this.use[key].pressed = false;
+        }
+    }
+
+    this.getKeyById = function (e, id) {
+        if (this.keys[id]) {
+            e.preventDefault();
+            return this.keys[id];
+        }
+
+        return;
+    }
+
+    this.init();
+
+}
 
 function gameStart () {
     loadLvl();
