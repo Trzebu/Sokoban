@@ -4,6 +4,7 @@ var game_window = null;
 var ctx = null;
 var game_loop = null;
 var player = null;
+var game_complete = false;
 var keys = new Keyboard();
 var map = [];
 var stones = [];
@@ -167,6 +168,16 @@ function loadMap () {
 
 function draw (interp) {
     ctx.clearRect(0, 0, 512, 512);
+
+    if (game_complete) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, 512, 512);
+        ctx.fillStyle = 'white';
+        ctx.font = "24pt Arial";
+        ctx.fillText('Game complete.', 150, 250);
+        return;
+    }
+
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, 512, 512);
 
@@ -223,23 +234,21 @@ function loadLvl () {
 }
 
 function gameComplete () {
+    game_complete = true;
     game_loop.stopLoop();
     time.stop();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, 512, 512);
-    ctx.fillStyle = 'white';
-    ctx.font = "24pt Arial";
-    ctx.fillText('Game complete.', 150, 250);
 }
 
 function updateStats () {
     document.getElementById("timer").innerText = "Time: " + time.time;
     document.getElementById("steps").innerText = "Steps: " + parseInt(steps);
+    document.getElementById("lvl").innerText = "Lvl: " + (lvl + 1);
 }
 
 function gameReset () {
     lvl = 0;
     steps = 0;
+    game_complete = false;
     time.reset();
     loadLvl();
 }
@@ -259,11 +268,11 @@ var Timer = function () {
 
     this.stop = function () {
         clearInterval(this.intervalId);
-        this.time = 0;
     }
 
     this.reset = function () {
         this.stop();
+        this.time = 0;
         this.start();
     }
 
@@ -271,7 +280,7 @@ var Timer = function () {
 
 function updateKeys () {
 
-    if (!player.in_roud) {
+    if (!player.in_roud && player) {
         if (keys.use.A.pressed ||
             keys.use.left.pressed) {
             player.x--;
