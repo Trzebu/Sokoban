@@ -7,4 +7,4 @@ Sokoban puzzle game engine
 by Sebastian 'xa' Rosik
 
 ## To fix
-* probmel with compliting game when the player finishes all maps
+* probmel with compliting game when the player finishes all maps - *fixed*
