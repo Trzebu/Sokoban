@@ -13,7 +13,7 @@ var steps = 0;
 var time = 0;
 
 var Stone = function (name, x, y) {
-    this.id = x + y;
+    this.id = x + "" + y;
     this.name = name;
     this.x = x;
     this.y = y;
