@@ -54,3 +54,59 @@ body {
     flex-wrap: wrap;
     margin-top: 5px;
 }
+
+#bot {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+}
+
+#arrows {
+    width: 100px;
+    height: 100%;
+}
+
+.arrow {
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border: 1px solid white;
+    float: left;
+    margin: 1px 0 0 1px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.arrow_center {
+    float: none;
+    margin-left: 34px;
+}
+
+i {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+    margin-top: 10px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.left {
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
