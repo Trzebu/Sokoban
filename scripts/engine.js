@@ -298,6 +298,24 @@ function updateKeys () {
 
 }
 
+function mouseUp (dir) {
+    switch (dir) {
+        case "up": keys.use.up.pressed = false; break;
+        case "down": keys.use.down.pressed = false; break;
+        case "left": keys.use.left.pressed = false; break;
+        case "right": keys.use.right.pressed = false; break;
+    }
+}
+
+function mouseDown (dir) {
+    switch (dir) {
+        case "up": keys.use.up.pressed = true; break;
+        case "down": keys.use.down.pressed = true; break;
+        case "left": keys.use.left.pressed = true; break;
+        case "right": keys.use.right.pressed = true; break;
+    }
+}
+
 var GameLoop = function () {
     this.loopId = null;
     this.lastFrameTimeMs = 0;

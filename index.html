@@ -21,8 +21,24 @@
                 <div class="click" onclick="loadLvl()"> | Lvl reset</div>
             </div>
             <canvas id="game" width="512" height="512">
-                Whoops! Looks like your web browser not support canvas element! Upgrade your browser if you want to play in this game.
+                Whoops! This look like your web browser not support canvas element! Upgrade your browser if you want to play in this game.
             </canvas>
+            <div id="bot">
+                <div id="arrows">
+                    <div class="arrow arrow_center" onmousedown="mouseDown('up')" onmouseup="mouseUp('up')">
+                        <i class="up"></i>
+                    </div>
+                    <div class="arrow" onmousedown="mouseDown('left')" onmouseup="mouseUp('left')">
+                        <i class="left"></i>
+                    </div>
+                    <div class="arrow" onmousedown="mouseDown('down')" onmouseup="mouseUp('down')">
+                        <i class="down"></i>
+                    </div>
+                    <div class="arrow" onmousedown="mouseDown('right')" onmouseup="mouseUp('right')">
+                        <i class="right"></i>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </body>
